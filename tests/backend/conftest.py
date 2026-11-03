@@ -1,6 +1,7 @@
 """
 Pytest configuration and fixtures for backend API tests.
 """
+import copy
 import sys
 from pathlib import Path
 
@@ -11,6 +12,7 @@ from fastapi.testclient import TestClient
 server_path = Path(__file__).parent.parent.parent / "server"
 sys.path.insert(0, str(server_path))
 
+import mock_data
 from main import app
 
 
@@ -19,6 +21,15 @@ def client():
     """Create a test client for the FastAPI application."""
     with TestClient(app) as test_client:
         yield test_client
+
+
+@pytest.fixture(autouse=True)
+def reset_restock_orders():
+    """Restore submitted restock orders after each test so one test's orders do not leak into the next."""
+    snapshot = copy.deepcopy(mock_data.restock_orders)
+    yield
+    # Assign in place rather than rebinding: main.py and restocking.py hold a reference to this list
+    mock_data.restock_orders[:] = snapshot
 
 
 @pytest.fixture

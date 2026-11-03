@@ -35,5 +35,12 @@ recent_transactions = load_json_file('transactions.json')
 # Load purchase orders
 purchase_orders = load_json_file('purchase_orders.json')
 
+# Restock catalog: unit cost and supplier lead time for items that can be restocked
+restock_catalog = load_json_file('restock_catalog.json')
+
+# Restock orders submitted through the API. Kept apart from `orders` (customer sales),
+# and in memory only, so these reset when the server restarts
+restock_orders = []
+
 # All data is now loaded from JSON files in the data/ directory
 # This allows for easier maintenance and updates of the sample data

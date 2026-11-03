@@ -6,6 +6,7 @@ export default {
     orders: 'Orders',
     finance: 'Finance',
     demandForecast: 'Demand Forecast',
+    restocking: 'Restocking',
     companyName: 'Catalyst Components',
     subtitle: 'Inventory Management System'
   },
@@ -112,6 +113,17 @@ export default {
     onTimeDelivery: 'On-Time Delivery',
     itemsCount: '{count} items',
     quantity: 'Qty',
+    submitted: {
+      title: 'Submitted Orders',
+      empty: 'No submitted orders yet',
+      loadFailed: 'Failed to load submitted orders',
+      orderNumber: 'Order Number',
+      submittedDate: 'Submitted',
+      items: 'Items',
+      total: 'Total',
+      expectedDelivery: 'Expected Delivery',
+      leadTime: 'Lead Time (days)'
+    },
     table: {
       orderNumber: 'Order Number',
       orderId: 'Order ID',
@@ -185,6 +197,44 @@ export default {
       change: 'Change',
       trend: 'Trend',
       period: 'Period'
+    }
+  },
+
+  // Restocking
+  restocking: {
+    title: 'Restocking',
+    description: 'Set a budget and review recommended restock orders based on forecasted demand',
+    budgetTitle: 'Restock Budget',
+    budgetLabel: 'Budget',
+    budget: 'Budget',
+    spent: 'Spent',
+    remaining: 'Remaining',
+    itemsToRestock: 'Items to Restock',
+    recommendations: 'Recommendations',
+    noStockRecord: 'No stock record',
+    empty: 'No restocking needed within this budget',
+    placeOrder: 'Place Order',
+    submitting: 'Submitting...',
+    loadFailed: 'Failed to load recommendations',
+    submitFailed: 'Failed to place order. Please try again.',
+    success: {
+      title: 'Order placed',
+      orderNumber: 'Order number',
+      expectedDelivery: 'Expected delivery',
+      leadTime: 'Lead time',
+      days: '{count} days'
+    },
+    table: {
+      sku: 'SKU',
+      item: 'Item',
+      supplier: 'Supplier',
+      onHand: 'On Hand',
+      forecastedDemand: 'Forecasted Demand',
+      trend: 'Trend',
+      quantity: 'Qty to Order',
+      unitCost: 'Unit Cost',
+      lineTotal: 'Line Total',
+      leadTime: 'Lead Time (days)'
     }
   },
 
