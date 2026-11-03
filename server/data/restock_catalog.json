@@ -1,0 +1,65 @@
+[
+  {
+    "sku": "WDG-001",
+    "item_name": "Industrial Widget Type A",
+    "supplier_name": "Apex Industrial Supply",
+    "unit_cost": 12.5,
+    "lead_time_days": 10
+  },
+  {
+    "sku": "BRG-102",
+    "item_name": "Steel Bearing Assembly",
+    "supplier_name": "Summit Parts Co.",
+    "unit_cost": 8.75,
+    "lead_time_days": 14
+  },
+  {
+    "sku": "GSK-203",
+    "item_name": "High-Temperature Gasket",
+    "supplier_name": "Summit Parts Co.",
+    "unit_cost": 3.2,
+    "lead_time_days": 14
+  },
+  {
+    "sku": "MTR-304",
+    "item_name": "Electric Motor 5HP",
+    "supplier_name": "Northwind Components",
+    "unit_cost": 115.0,
+    "lead_time_days": 21
+  },
+  {
+    "sku": "FLT-405",
+    "item_name": "Oil Filter Cartridge",
+    "supplier_name": "Apex Industrial Supply",
+    "unit_cost": 6.4,
+    "lead_time_days": 10
+  },
+  {
+    "sku": "VLV-506",
+    "item_name": "Pressure Relief Valve",
+    "supplier_name": "Northwind Components",
+    "unit_cost": 42.0,
+    "lead_time_days": 21
+  },
+  {
+    "sku": "PSU-501",
+    "item_name": "5V 10A Switching Power Supply",
+    "supplier_name": "Helios Electronics",
+    "unit_cost": 18.99,
+    "lead_time_days": 5
+  },
+  {
+    "sku": "SNR-420",
+    "item_name": "Temperature Sensor Module",
+    "supplier_name": "Helios Electronics",
+    "unit_cost": 27.5,
+    "lead_time_days": 5
+  },
+  {
+    "sku": "CTL-330",
+    "item_name": "Logic Controller Board",
+    "supplier_name": "Northwind Components",
+    "unit_cost": 64.0,
+    "lead_time_days": 21
+  }
+]

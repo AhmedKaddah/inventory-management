@@ -5,6 +5,39 @@
       <p>{{ t('orders.description') }}</p>
     </div>
 
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">{{ t('orders.submitted.title') }} ({{ restockOrders.length }})</h3>
+      </div>
+      <div v-if="restockLoading" class="loading">{{ t('common.loading') }}</div>
+      <div v-else-if="restockError" class="error">{{ restockError }}</div>
+      <div v-else-if="restockOrders.length === 0" class="loading">{{ t('orders.submitted.empty') }}</div>
+      <div v-else class="table-container">
+        <table class="orders-table">
+          <thead>
+            <tr>
+              <th class="col-order-number">{{ t('orders.submitted.orderNumber') }}</th>
+              <th class="col-date">{{ t('orders.submitted.submittedDate') }}</th>
+              <th class="col-items">{{ t('orders.submitted.items') }}</th>
+              <th class="col-value">{{ t('orders.submitted.total') }}</th>
+              <th class="col-date">{{ t('orders.submitted.expectedDelivery') }}</th>
+              <th class="col-date">{{ t('orders.submitted.leadTime') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="ro in restockOrders" :key="ro.id">
+              <td class="col-order-number"><strong>{{ ro.order_number }}</strong></td>
+              <td class="col-date">{{ formatDate(ro.submitted_at) }}</td>
+              <td class="col-items">{{ t('orders.itemsCount', { count: ro.lines.length }) }}</td>
+              <td class="col-value"><strong>{{ formatCurrency(ro.total_cost, currentCurrency) }}</strong></td>
+              <td class="col-date">{{ formatDate(ro.expected_delivery_date) }}</td>
+              <td class="col-date">{{ ro.lead_time_days }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
     <div v-if="loading" class="loading">{{ t('common.loading') }}</div>
     <div v-else-if="error" class="error">{{ error }}</div>
     <div v-else>
@@ -83,6 +116,7 @@ import { ref, onMounted, watch, computed } from 'vue'
 import { api } from '../api'
 import { useFilters } from '../composables/useFilters'
 import { useI18n } from '../composables/useI18n'
+import { formatCurrency } from '../utils/currency'
 
 export default {
   name: 'Orders',
@@ -95,6 +129,24 @@ export default {
     const loading = ref(true)
     const error = ref(null)
     const orders = ref([])
+
+    // Restock orders load independently so a failure does not block the customer table
+    const restockOrders = ref([])
+    const restockLoading = ref(true)
+    const restockError = ref(null)
+
+    const loadRestockOrders = async () => {
+      try {
+        restockLoading.value = true
+        restockError.value = null
+        restockOrders.value = await api.getRestockingOrders()
+      } catch (err) {
+        restockError.value = t('orders.submitted.loadFailed')
+        console.error('Restock orders load error:', err)
+      } finally {
+        restockLoading.value = false
+      }
+    }
 
     // Use shared filters
     const {
@@ -144,22 +196,37 @@ export default {
     }
 
     const formatDate = (dateString) => {
+      if (!dateString) return '-'
+      // Date-only strings parse as UTC midnight, which shows the previous day west of UTC; build a local date instead
+      const dateOnly = typeof dateString === 'string' && dateString.match(/^(\d{4})-(\d{2})-(\d{2})$/)
+      const date = dateOnly
+        ? new Date(Number(dateOnly[1]), Number(dateOnly[2]) - 1, Number(dateOnly[3]))
+        : new Date(dateString)
+      if (isNaN(date.getTime())) return '-'
       const { currentLocale } = useI18n()
       const locale = currentLocale.value === 'ja' ? 'ja-JP' : 'en-US'
-      return new Date(dateString).toLocaleDateString(locale, {
+      return date.toLocaleDateString(locale, {
         year: 'numeric',
         month: 'short',
         day: 'numeric'
       })
     }
 
-    onMounted(loadOrders)
+    onMounted(() => {
+      loadOrders()
+      loadRestockOrders()
+    })
 
     return {
       t,
       loading,
       error,
       orders,
+      restockOrders,
+      restockLoading,
+      restockError,
+      currentCurrency,
+      formatCurrency,
       getOrdersByStatus,
       getOrderStatusClass,
       formatDate,
